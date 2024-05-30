@@ -8,19 +8,26 @@ from pydantic import BaseModel
 from functions import predict
 from starlette.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 
-
-class Item(BaseModel):
-    url: str
 
 app = config.app
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+class URLInput(BaseModel):
+    url: str
+    model_name: str
+
+
 templates = Jinja2Templates(directory="templates")
 
-@app.get("/models/")
-def get_models():
-    model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
-    return {"models": model_files}
 
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
@@ -29,6 +36,11 @@ async def main(request: Request):
 @app.get("/doc", response_class=HTMLResponse)
 async def main(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/models/")
+def get_models():
+    model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
+    return {"models": model_files}
 
 @app.post('/predict')
 async def predict_route(url_input: URLInput):
