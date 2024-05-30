@@ -45,9 +45,9 @@ def get_models():
 @app.post('/predict')
 async def predict_route(url_input: URLInput):
     try:
-        print("predict_route"+url_input)
+        print("predict_route"+url_input.url)
         # Await the prediction result
-        prediction = await predict(url_input.url)
+        prediction = await predict(url_input.url, url_input.model_name)
         
         # Get the max accuracy prediction
         predicted_class = int(np.argmax(prediction))
