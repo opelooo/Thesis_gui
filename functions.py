@@ -7,15 +7,22 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-async def predict(item):
+async def predict(url_input):
     # Load the model (assuming it's a Keras model)
-    model = load_model('model/URL_Classification_2024-01-08_04-53-32.h5')
+    url = url_input.url
+    model_name = url_input.model_name
+    model_path = os.path.join("models", model_name)
+    
+    if not os.path.exists(model_path):
+        raise HTTPException(status_code=404, detail="Model not found")
+        
+    model = tf.keras.models.load_model(model_path)
 
     # Get the max_sequence_length from the model
     max_sequence_length = model.layers[0].input_shape[1]
 
     # Tokenize and preprocess the input
-    tokens = tokenize_url(item)  # Make sure tokenize_url is defined and returns a list of tokens
+    tokens = tokenize_url(url_input)  # Make sure tokenize_url is defined and returns a list of tokens
     cleaned_tokens = clean_and_normalize(tokens)  # Make sure clean_and_normalize is defined
 
     # Use the existing tokenizer if available; otherwise, create a new one

@@ -51,9 +51,22 @@
     </style>
     <script>
         window.onload = function () {
+            fetch('/models/')
+                .then(response => response.json())
+                .then(data => {
+                    var modelSelect = document.getElementById("model");
+                    data.models.forEach(model => {
+                        var option = document.createElement("option");
+                        option.value = model;
+                        option.textContent = model;
+                        modelSelect.appendChild(option);
+                    });
+                });
+
             document.getElementById("url-form").onsubmit = function (event) {
                 event.preventDefault();
                 var url = document.getElementById("url").value;
+                var model = document.getElementById("model").value;
                 if (!isUrl(url)) {
                     document.getElementById("prediction").textContent = "Fail: Text you give is not an URL";
                     return;
@@ -63,7 +76,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ url: url })
+                    body: JSON.stringify({ url: url, model_name: model })
                 }).then(response => response.json())
                     .then(data => {
                         if (data.status == "fail") {
@@ -99,8 +112,9 @@
     <h1>Welcome to URL Classifier API!</h1>
     <form id="url-form">
         <label for="url">Enter a URL:</label><br>
-        <input type="text" id="url" name="url">
-        <br>
+        <input type="text" id="url" name="url"><br>
+        <label for="model">Select a Model:</label><br>
+        <select id="model" name="model"></select><br>
         <input type="submit" value="Submit">
     </form>
     <p id="prediction"></p>

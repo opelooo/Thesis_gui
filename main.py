@@ -17,6 +17,11 @@ app = config.app
 
 templates = Jinja2Templates(directory="templates")
 
+@app.get("/models/")
+def get_models():
+    model_files = [f for f in os.listdir("Thesis_gui/models") if f.endswith('.h5')]
+    return {"models": model_files}
+
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -26,10 +31,10 @@ async def main(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post('/predict')
-async def predict_route(item: Item):
+async def predict_route(url_input: URLInput):
     try:
         # Await the prediction result
-        prediction = await predict(item.url)
+        prediction = await predict(url_input.url)
         
         # Get the max accuracy prediction
         predicted_class = int(np.argmax(prediction))
