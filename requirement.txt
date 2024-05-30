@@ -18,3 +18,5 @@ keras==2.15.0
 python-multipart==0.0.6
 mysql-connector
 numpy
+jinja2
+aiofiles
