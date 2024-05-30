@@ -19,7 +19,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/models/")
 def get_models():
-    model_files = [f for f in os.listdir("Thesis_gui/models") if f.endswith('.h5')]
+    model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
     return {"models": model_files}
 
 @app.get("/", response_class=HTMLResponse)
