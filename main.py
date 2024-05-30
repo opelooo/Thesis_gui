@@ -31,11 +31,11 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("templates/index.html", {"request": request})
 
 @app.get("/doc", response_class=HTMLResponse)
 async def main(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("templates/index.html", {"request": request})
 
 @app.get("/models/")
 def get_models():
