@@ -11,7 +11,7 @@ async def predict(url_input):
     # Load the model (assuming it's a Keras model)
     url = url_input.url
     model_name = url_input.model_name
-    model_path = os.path.join("models", model_name)
+    model_path = os.path.join("/app/models", model_name)
     
     if not os.path.exists(model_path):
         raise HTTPException(status_code=404, detail="Model not found")
