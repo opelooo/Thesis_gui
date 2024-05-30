@@ -19,7 +19,7 @@
             margin-top: 50px;
         }
 
-        input[type=text] {
+        input[type=text], select {
             width: 50%;
             padding: 12px 20px;
             margin: 8px 0;
@@ -67,39 +67,53 @@
                 event.preventDefault();
                 var url = document.getElementById("url").value;
                 var model = document.getElementById("model").value;
+
                 if (!isUrl(url)) {
-                    document.getElementById("prediction").textContent = "Fail: Text you give is not an URL";
+                    document.getElementById("prediction").textContent = "Fail: The text you entered is not a valid URL.";
                     return;
                 }
+
                 fetch('/predict/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ url: url, model_name: model })
-                }).then(response => response.json())
-                    .then(data => {
-                        if (data.status == "fail") {
-                            document.getElementById("prediction").textContent = "Prediction: " + data.message;
-                        } else {
-                            var prediction = "";
-                            if (data.predicted_class == 0) {
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "fail") {
+                        document.getElementById("prediction").textContent = "Error: " + data.message;
+                    } else {
+                        var prediction;
+                        switch (data.predicted_class) {
+                            case 0:
                                 prediction = "Benign";
-                            } else if (data.predicted_class == 1) {
+                                break;
+                            case 1:
                                 prediction = "Defacement";
-                            } else if (data.predicted_class == 2) {
+                                break;
+                            case 2:
                                 prediction = "Phishing";
-                            } else if (data.predicted_class == 3) {
+                                break;
+                            case 3:
                                 prediction = "Malware";
-                            }
-                            document.getElementById("prediction").textContent = "Prediction: " + prediction + " (Accuracy: " + data.accuracy.toFixed(2) + ")";
+                                break;
+                            default:
+                                prediction = "Unknown";
                         }
-                    });
+                        document.getElementById("prediction").textContent = `Prediction: ${prediction} (Accuracy: ${data.accuracy.toFixed(2)})`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("prediction").textContent = "Error: " + error.message;
+                });
             };
         };
-        function isUrl(input_string) {
+
+        function isUrl(inputString) {
             try {
-                var result = new URL(input_string);
+                new URL(inputString);
                 return true;
             } catch (error) {
                 return false;
@@ -112,9 +126,9 @@
     <h1>Welcome to URL Classifier API!</h1>
     <form id="url-form">
         <label for="url">Enter a URL:</label><br>
-        <input type="text" id="url" name="url"><br>
+        <input type="text" id="url" name="url" required><br>
         <label for="model">Select a Model:</label><br>
-        <select id="model" name="model"></select><br>
+        <select id="model" name="model" required></select><br>
         <input type="submit" value="Submit">
     </form>
     <p id="prediction"></p>
