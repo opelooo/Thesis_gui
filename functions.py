@@ -8,13 +8,12 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 async def predict(url_input):
+    print("predict func"+url_input)
     # Load the model (assuming it's a Keras model)
     url = url_input.url
     model_name = url_input.model_name
     model_path = os.path.join("/app/models", model_name)
-    
-    if not os.path.exists(model_path):
-        raise HTTPException(status_code=404, detail="Model not found")
+    print("model name: " + model_name)
         
     model = tf.keras.models.load_model(model_path)
 
@@ -36,6 +35,7 @@ async def predict(url_input):
 
     # Await the prediction result
     prediction = model.predict(np.array([X_padded[0]]))
+    print("prediction: " + prediction)
 
     return prediction
 

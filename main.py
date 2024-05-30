@@ -45,6 +45,7 @@ def get_models():
 @app.post('/predict')
 async def predict_route(url_input: URLInput):
     try:
+        print("predict_route"+url_input)
         # Await the prediction result
         prediction = await predict(url_input.url)
         
