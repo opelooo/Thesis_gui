@@ -35,11 +35,15 @@ async def predict(url: str, model_name: str):
     X_padded = pad_sequences(sequences, maxlen=max_sequence_length)
 
     # Await the prediction result
-    prediction = model.predict(np.array([X_padded[0]]))
+    prediction = model.predict(X_padded)
+    predicted_class = np.argmax(prediction)
+
+    class_name = class_names[predicted_class]
+    probability = np.max(prediction) * 100
     print("prediction: " + prediction)
     sys.stdout.flush()
 
-    return prediction
+    return {"status": "success", "predicted_class": predicted_class, "accuracy": accuracy}
 
 def tokenize_url(url):
     parsed_url = urlparse(url)

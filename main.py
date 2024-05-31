@@ -56,19 +56,8 @@ async def predict_route(url_input: URLInput):
         sys.stdout.flush()
         
         prediction = await predict(url_input.url, url_input.model_name)
-        
-        # Get the max accuracy prediction
-        predicted_class = int(np.argmax(prediction))
-        
-        # Get the accuracy from the predicted class
-        accuracy = prediction[0][predicted_class]
-        
-        print(predicted_class, prediction[0], np.argmax(prediction[0]))
-        sys.stdout.flush()
-        
-        prediction_str = str(prediction)
-        
-        return {"status": "success", "predicted_class": predicted_class, "accuracy": accuracy}
+                
+        return prediction
 
     except Exception as e:
         print(str(e))
