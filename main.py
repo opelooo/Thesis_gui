@@ -55,6 +55,8 @@ async def predict_route(url_input: URLInput):
         print(f"predict_route: URL={url_input.url}, Model Name={url_input.model_name}")
         sys.stdout.flush()
         
+        prediction = await predict(url_input.url, url_input.model_name)
+        
         # Get the max accuracy prediction
         predicted_class = int(np.argmax(prediction))
         
