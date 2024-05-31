@@ -9,9 +9,11 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 async def predict(url: str, model_name: str):
     print("predict func"+url +"using" + model_name)
+    sys.stdout.flush()
     
     model_path = f"/app/models/{model_name}"
     print("model name: " + model_name)
+    sys.stdout.flush()
         
     model = tf.keras.models.load_model(model_path)
 
@@ -34,6 +36,7 @@ async def predict(url: str, model_name: str):
     # Await the prediction result
     prediction = model.predict(np.array([X_padded[0]]))
     print("prediction: " + prediction)
+    sys.stdout.flush()
 
     return prediction
 

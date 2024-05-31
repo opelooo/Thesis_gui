@@ -1,5 +1,6 @@
 import io
 import os
+import sys
 import numpy as np
 from uvicorn import run
 from fastapi import Request, HTTPException
@@ -31,6 +32,8 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
+    print("open main menu")
+
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/doc", response_class=HTMLResponse)
@@ -50,6 +53,7 @@ async def predict_route(url_input: URLInput):
             raise HTTPException(status_code=404, detail="Model not found") 
         # Await the prediction result
         print(f"predict_route: URL={url_input.url}, Model Name={url_input.model_name}")
+        sys.stdout.flush()
         
         # Get the max accuracy prediction
         predicted_class = int(np.argmax(prediction))
@@ -57,10 +61,12 @@ async def predict_route(url_input: URLInput):
         # Get the accuracy from the predicted class
         accuracy = float(prediction[0][predicted_class])
         print(predicted_class, prediction[0], np.argmax(prediction[0]))
+        sys.stdout.flush()
         return {"status": "success", "predicted_class": predicted_class, "accuracy": accuracy}
 
     except Exception as e:
         print(str(e))
+        sys.stdout.flush()
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
