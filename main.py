@@ -61,7 +61,7 @@ async def predict_route(url_input: URLInput):
         predicted_class = int(np.argmax(prediction))
         
         # Get the accuracy from the predicted class
-        accuracy = float(prediction[0][predicted_class])
+        accuracy = prediction[0][predicted_class]
         
         print(predicted_class, prediction[0], np.argmax(prediction[0]))
         sys.stdout.flush()
