@@ -103,7 +103,7 @@
                             default:
                                 prediction = "Unknown";
                         }
-                        document.getElementById("prediction").textContent = `Prediction: ${prediction} (Accuracy: ${data.accuracy.toFixed(2)})`;
+                        document.getElementById("prediction").textContent = `Prediction: ${prediction} (Accuracy: ${data.accuracy})`;
                     }
                 })
                 .catch(error => {
@@ -120,6 +120,7 @@
                 return false;
             }
         }
+		
     </script>
 </head>
 
