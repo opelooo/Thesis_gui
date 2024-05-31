@@ -9,7 +9,7 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 async def predict(url: str, model_name: str):
-    print("predict func"+url +"using" + model_name)
+    print("predict func "+url +" using " + model_name)
     sys.stdout.flush()
     
     model_path = f"/app/models/{model_name}"
