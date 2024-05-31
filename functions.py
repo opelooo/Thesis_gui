@@ -1,4 +1,5 @@
 import re
+import sys
 import string
 import numpy as np
 from urllib.parse import urlparse
@@ -8,35 +9,39 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 async def predict(url: str, model_name: str):
-    print("predict func"+url +"using" + model_name)
-    sys.stdout.flush()
+    try:
+        print("predict func"+url +"using" + model_name)
+        sys.stdout.flush()
     
-    model_path = f"/app/models/{model_name}"
-    print("model name: " + model_name)
-    sys.stdout.flush()
+        model_path = f"/app/models/{model_name}"
+        print("model name: " + model_name)
+        sys.stdout.flush()
         
-    model = tf.keras.models.load_model(model_path)
+        model = tf.keras.models.load_model(model_path)
 
-    # Get the max_sequence_length from the model
-    max_sequence_length = model.layers[0].input_shape[1]
+        # Get the max_sequence_length from the model
+        max_sequence_length = model.layers[0].input_shape[1]
 
-    # Tokenize and preprocess the input
-    tokens = tokenize_url(url)  # Make sure tokenize_url is defined and returns a list of tokens
-    cleaned_tokens = clean_and_normalize(tokens)  # Make sure clean_and_normalize is defined
+        # Tokenize and preprocess the input
+        tokens = tokenize_url(url)  # Make sure tokenize_url is defined and returns a list of tokens
+        cleaned_tokens = clean_and_normalize(tokens)  # Make sure clean_and_normalize is defined
 
-    # Use the existing tokenizer if available; otherwise, create a new one
-    if 'tokenizer' not in globals():
-        global tokenizer
-        tokenizer = Tokenizer()
-        tokenizer.fit_on_texts(cleaned_tokens)
+        # Use the existing tokenizer if available; otherwise, create a new one
+        if 'tokenizer' not in globals():
+            global tokenizer
+            tokenizer = Tokenizer()
+            tokenizer.fit_on_texts(cleaned_tokens)
 
-    sequences = tokenizer.texts_to_sequences(cleaned_tokens)
-    X_padded = pad_sequences(sequences, maxlen=max_sequence_length)
+        sequences = tokenizer.texts_to_sequences(cleaned_tokens)
+        X_padded = pad_sequences(sequences, maxlen=max_sequence_length)
 
-    # Await the prediction result
-    prediction = model.predict(np.array([X_padded[0]]))
-    print("prediction: " + prediction)
-    sys.stdout.flush()
+        # Await the prediction result
+        prediction = model.predict(np.array([X_padded[0]]))
+        print("prediction: " + prediction)
+        sys.stdout.flush()
+    except Exception as e:
+        print(str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
     return prediction
 
