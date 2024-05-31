@@ -104,7 +104,12 @@
                             default:
                                 prediction = "Unknown";
                         }
-                        document.getElementById("prediction").textContent = `Prediction: ${prediction} (Accuracy: ${data.accuracy})`;
+						if (prediction === "Unknown") {
+							document.getElementById("prediction").textContent = `Model Fail`;
+						} else {
+							document.getElementById("prediction").textContent = `Prediction: ${prediction} (Accuracy: ${data.accuracy})`;
+						}
+                        
                     }
                 })
                 .catch(error => {
