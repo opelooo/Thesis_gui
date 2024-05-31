@@ -47,7 +47,7 @@ async def predict_route(url_input: URLInput):
     try:
         model_path = os.path.join("models", url_input.model_name)
         if not os.path.exists(model_path):
-            raise HTTPException(status_code=404, detail="Model not found")
+            raise HTTPException(status_code=404, detail="Model not found") 
         # Await the prediction result
         print(f"predict_route: URL={url_input.url}, Model Name={url_input.model_name}")
         
