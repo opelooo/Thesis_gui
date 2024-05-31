@@ -8,6 +8,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
+class_names = ['Benign', 'Defacement', 'Phishing', 'Malware']
+
 async def predict(url: str, model_name: str):
     print("predict func "+url +" using " + model_name)
     sys.stdout.flush()

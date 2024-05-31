@@ -87,30 +87,8 @@
                     if (data.status === "fail") {
                         document.getElementById("prediction").textContent = "Error: " + data.detail;
                     } else {
-                        var prediction;
-                        switch (data.predicted_class) {
-                            case 0:
-                                prediction = "Benign";
-                                break;
-                            case 1:
-                                prediction = "Defacement";
-                                break;
-                            case 2:
-                                prediction = "Phishing";
-                                break;
-                            case 3:
-                                prediction = "Malware";
-                                break;
-                            default:
-                                prediction = "Unknown";
-                        }
-						if (prediction === "Unknown") {
-							document.getElementById("prediction").textContent = `Model Fail`;
-						} else {
-							document.getElementById("prediction").textContent = `Prediction: ${prediction} (Accuracy: ${data.accuracy})`;
-						}
-                        
-                    }
+						document.getElementById("prediction").textContent = `Prediction: ${deta.prediction} (Accuracy: ${data.accuracy}%)`;
+					}
                 })
                 .catch(error => {
                     document.getElementById("prediction").textContent = "Error: " + error.detail;
