@@ -91,7 +91,7 @@
 					}
                 })
                 .catch(error => {
-                    document.getElementById("prediction").textContent = "Error: " + error.detail;
+                    document.getElementById("prediction").textContent = "Error: " + error.msg;
                 });
             };
         };

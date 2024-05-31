@@ -38,13 +38,21 @@ async def predict(url: str, model_name: str):
 
     # Await the prediction result
     prediction = model.predict(X_padded)
-    predicted_class = np.argmax(prediction)
-
-    class_name = class_names[predicted_class]
-    probability = np.max(prediction) * 100
-    print("prediction: " + prediction)
+    print("prediction: " + prediction +)
     sys.stdout.flush()
-
+    
+    predicted_class = np.argmax(prediction)
+    print("prediction class: " + predicted_class)
+    sys.stdout.flush()
+    
+    class_name = class_names[predicted_class]
+    print("class_name: " + class_name)
+    sys.stdout.flush()
+    
+    probability = np.max(prediction) * 100
+    print("probability: " + probability)
+    sys.stdout.flush()
+    
     return {"status": "success", "predicted_class": predicted_class, "accuracy": accuracy}
 
 def tokenize_url(url):
