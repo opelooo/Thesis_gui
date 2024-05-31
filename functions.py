@@ -16,7 +16,7 @@ async def predict(url: str, model_name: str):
     print("model name: " + model_name)
     sys.stdout.flush()
         
-    model = tf.keras.models.load_model(model_path)
+    model = load_model(model_path)
 
     # Get the max_sequence_length from the model
     max_sequence_length = model.layers[0].input_shape[1]
