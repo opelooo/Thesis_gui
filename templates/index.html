@@ -74,7 +74,7 @@
                     return;
                 }
 
-                fetch('/predict/', {
+                fetch('/predict', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -90,7 +90,7 @@
 					}
                 })
                 .catch(error => {
-                    document.getElementById("prediction").textContent = "Error: " + error.msg + data;
+                    document.getElementById("prediction").textContent = "Error: " + error.msg;
                 });
             };
         };
