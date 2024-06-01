@@ -56,11 +56,16 @@ async def predict(url: str, model_name: str):
     print("sequences: ", sequences)
     sys.stdout.flush()
 
-    X_padded = pad_sequences(sequences, maxlen=max_sequence_length)
+    X_padded = pad_sequences([sequences], maxlen=max_sequence_length)
     print("X_padded: ", X_padded)
     print("X_padded dtype: ", X_padded.dtype)
     sys.stdout.flush()
     del tokenizer
+    
+    # Flatten the list of lists into a single list
+    flat_sequences = [item for sublist in sequences for item in sublist]
+    print("flat_sequences: ", flat_sequences)
+    sys.stdout.flush()
 
     # Await the prediction result
     prediction = model.predict(X_padded)
