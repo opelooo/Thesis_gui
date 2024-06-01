@@ -57,6 +57,7 @@ async def predict(url: str, model_name: str):
     sys.stdout.flush()
 
     X_padded = pad_sequences(sequences, maxlen=max_sequence_length)
+    print("X_padded: ", X_padded)
     print("X_padded dtype: ", X_padded.dtype)
     sys.stdout.flush()
     del tokenizer
