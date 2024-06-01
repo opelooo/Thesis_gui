@@ -36,12 +36,14 @@ async def predict(url: str, model_name: str):
     cleaned_tokens = clean_and_normalize(tokens)
     print("cleaned_tokens: ", cleaned_tokens)
     sys.stdout.flush()
+    
+    tokens = read_tokens()
 
     # Use the existing tokenizer if available; otherwise, create a new one
     if 'tokenizer' not in globals():
         global tokenizer
         tokenizer = Tokenizer()
-        tokens = read_tokens()
+        
         tokenizer.fit_on_texts(tokens)
         tokenizer.fit_on_texts(cleaned_tokens)
 
