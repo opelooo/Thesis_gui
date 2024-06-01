@@ -12,7 +12,7 @@ class_names = ['Benign', 'Defacement', 'Phishing', 'Malware']
 
 
 async def predict(url: str, model_name: str):
-    print_info(f"predict func {url} using {model_name}")
+    print_info(f"predict {url} using {model_name}")
     
     model_path = f"/app/models/{model_name}"
     #print_info("model name: " + model_name)
@@ -35,10 +35,10 @@ async def predict(url: str, model_name: str):
         tokenizer = Tokenizer()
         
         tokenizer.fit_on_texts(tokens)
-        print('INFO:    Found %s unique tokens.' % len(tokenizer.word_index))
+        print('USER INFO:    Found %s unique tokens.' % len(tokenizer.word_index))
         
         tokenizer.fit_on_texts(cleaned_tokens)
-        print('INFO:    Found %s unique tokens.' % len(tokenizer.word_index))
+        print('USER INFO:    Found %s unique tokens.' % len(tokenizer.word_index))
 
     sequences = tokenizer.texts_to_sequences(cleaned_tokens)
     print_info(f"sequences: {sequences}")
@@ -56,7 +56,7 @@ async def predict(url: str, model_name: str):
     prediction = model.predict(X_padded)
     print_info(f"prediction: {prediction}")
     # print("prediction dtype: ", prediction.dtype)
-    sys.stdout.flush()
+    # sys.stdout.flush()
     
     predicted_class = np.argmax(prediction)
     # print("predicted class: ", predicted_class)
@@ -106,4 +106,4 @@ async def read_tokens():
     return word_index
 
 def print_info(msg):
-    print("INFO:    " + msg)
+    print("USER INFO:    " + msg)

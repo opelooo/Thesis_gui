@@ -51,8 +51,8 @@ async def predict_route(url_input: URLInput):
         if not os.path.exists(model_path):
             raise HTTPException(status_code=404, detail="Model not found") 
         # Await the prediction result
-        print(f"predict_route: URL={url_input.url}, Model Name={url_input.model_name}")
-        sys.stdout.flush()
+        #print(f"predict_route: URL={url_input.url}, Model Name={url_input.model_name}")
+        #sys.stdout.flush()
         
         prediction = await predict(url_input.url, url_input.model_name)
                 
