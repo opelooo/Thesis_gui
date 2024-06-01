@@ -69,6 +69,7 @@ async def predict(url: str, model_name: str):
     print("probability: ", probability)
     sys.stdout.flush()
     
+    del tokenizer
     return {"status": "success", "predicted_class": int(predicted_class), "accuracy": probability}
 
 def tokenize_url(url):
