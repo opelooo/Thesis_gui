@@ -41,7 +41,7 @@ async def predict(url: str, model_name: str):
     if 'tokenizer' not in globals():
         global tokenizer
         tokenizer = Tokenizer()
-        tokenizer.word_index = read_tokens()
+        tokenizer.fit_on_tekts(read_tokens())
         tokenizer.fit_on_texts(cleaned_tokens)
 
     sequences = tokenizer.texts_to_sequences(cleaned_tokens)
@@ -49,7 +49,6 @@ async def predict(url: str, model_name: str):
     sys.stdout.flush()
 
     X_padded = pad_sequences([sequences], maxlen=max_sequence_length)
-    print("X_padded: ", X_padded)
     print("X_padded dtype: ", X_padded.dtype)
     sys.stdout.flush()
     del tokenizer
