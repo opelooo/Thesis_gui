@@ -41,7 +41,7 @@ async def predict(url: str, model_name: str):
     if 'tokenizer' not in globals():
         global tokenizer
         tokenizer = Tokenizer()
-        tokenizer.fit_on_tekts(read_tokens())
+        tokenizer.fit_on_texts(read_tokens())
         tokenizer.fit_on_texts(cleaned_tokens)
 
     sequences = tokenizer.texts_to_sequences(cleaned_tokens)
