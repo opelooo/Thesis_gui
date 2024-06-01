@@ -44,7 +44,7 @@ async def predict(url: str, model_name: str):
 
     # Await the prediction result
     prediction = model.predict(X_padded)
-    print("prediction: " + prediction +)
+    print("prediction: " + prediction)
     sys.stdout.flush()
     
     predicted_class = np.argmax(prediction)
