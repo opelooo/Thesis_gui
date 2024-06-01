@@ -90,7 +90,7 @@
 					}
                 })
                 .catch(error => {
-                    document.getElementById("prediction").textContent = "Error: " + error.msg;
+                    document.getElementById("prediction").textContent = "Error: " + error.msg + data;
                 });
             };
         };
