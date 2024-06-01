@@ -19,13 +19,19 @@ async def predict(url: str, model_name: str):
     sys.stdout.flush()
         
     model = load_model(model_path)
+    print("load model")
+    sys.stdout.flush()
 
     # Get the max_sequence_length from the model
     max_sequence_length = model.layers[0].input_shape[1]
+    print("max_sequence_length")
+    sys.stdout.flush()
 
     # Tokenize and preprocess the input
     tokens = tokenize_url(url)  # Make sure tokenize_url is defined and returns a list of tokens
     cleaned_tokens = clean_and_normalize(tokens)  # Make sure clean_and_normalize is defined
+    print("clean_normalize")
+    sys.stdout.flush()
 
     # Use the existing tokenizer if available; otherwise, create a new one
     if 'tokenizer' not in globals():
