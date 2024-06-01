@@ -72,6 +72,8 @@
                     document.getElementById("prediction").textContent = "Fail: The text you entered is not a valid URL.";
                     return;
                 }
+				
+				document.getElementById("prediction").textContent = "Predicting...";
 
                 fetch('/predict/', {
                     method: 'POST',
