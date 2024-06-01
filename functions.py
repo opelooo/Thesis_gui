@@ -24,13 +24,16 @@ async def predict(url: str, model_name: str):
 
     # Get the max_sequence_length from the model
     max_sequence_length = model.layers[0].input_shape[1]
-    print("max_sequence_length")
+    print("max_sequence_length: ", max_sequence_length)
     sys.stdout.flush()
 
     # Tokenize and preprocess the input
-    tokens = tokenize_url(url)  # Make sure tokenize_url is defined and returns a list of tokens
-    cleaned_tokens = clean_and_normalize(tokens)  # Make sure clean_and_normalize is defined
-    print("clean_normalize")
+    tokens = tokenize_url(url)
+    print("tokens: ", tokens)
+    sys.stdout.flush()
+    
+    cleaned_tokens = clean_and_normalize(tokens)
+    print("cleaned_tokens: ", cleaned_tokens)
     sys.stdout.flush()
 
     # Use the existing tokenizer if available; otherwise, create a new one
@@ -40,15 +43,22 @@ async def predict(url: str, model_name: str):
         tokenizer.fit_on_texts(cleaned_tokens)
 
     sequences = tokenizer.texts_to_sequences(cleaned_tokens)
-    X_padded = pad_sequences(sequences, maxlen=max_sequence_length)
+    print("sequences: ", sequences)
+    sys.stdout.flush()
+
+    X_padded = pad_sequences([sequences], maxlen=max_sequence_length)
+    print("X_padded: ", X_padded)
+    print("X_padded dtype: ", X_padded.dtype)
+    sys.stdout.flush()
 
     # Await the prediction result
     prediction = model.predict(X_padded)
-    print("prediction: " + prediction)
+    print("prediction: ", prediction)
+    print("prediction dtype: ", prediction.dtype)
     sys.stdout.flush()
     
     predicted_class = np.argmax(prediction)
-    print("prediction class: " + predicted_class)
+    print("predicted class: ", predicted_class)
     sys.stdout.flush()
     
     class_name = class_names[predicted_class]
@@ -56,10 +66,10 @@ async def predict(url: str, model_name: str):
     sys.stdout.flush()
     
     probability = np.max(prediction) * 100
-    print("probability: " + probability)
+    print("probability: ", probability)
     sys.stdout.flush()
     
-    return {"status": "success", "predicted_class": predicted_class, "accuracy": accuracy}
+    return {"status": "success", "predicted_class": predicted_class, "accuracy": probability}
 
 def tokenize_url(url):
     parsed_url = urlparse(url)
@@ -69,6 +79,7 @@ def tokenize_url(url):
     scheme_tokens = re.findall(r'\w+', scheme) if scheme else []
     domain_tokens = re.findall(r'\w+', domain) if domain else []
     path_tokens = re.findall(r'\w+', path) if path else []
+    
     query_params = parse_qs(parsed_url.query)
     query_tokens = []
     for key, values in query_params.items():
