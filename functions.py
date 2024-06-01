@@ -24,7 +24,7 @@ async def predict(url: str, model_name: str):
     sys.stdout.flush()
 
     # Get the max_sequence_length from the model
-    max_sequence_length = model.layers[0].input_shape[1]
+    max_sequence_length = 148
     print("max_sequence_length: ", max_sequence_length)
     sys.stdout.flush()
 
