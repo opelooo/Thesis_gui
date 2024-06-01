@@ -27,13 +27,8 @@ async def predict(url: str, model_name: str):
     max_sequence_length = 148
     print("max_sequence_length: ", max_sequence_length)
     sys.stdout.flush()
-
-    # Tokenize and preprocess the input
-    tokens = tokenize_url(url)
-    print("tokens: ", tokens)
-    sys.stdout.flush()
     
-    cleaned_tokens = clean_and_normalize(tokens)
+    cleaned_tokens = clean_and_normalize(tokenize_url(url))
     print("cleaned_tokens: ", cleaned_tokens)
     sys.stdout.flush()
     
@@ -52,20 +47,15 @@ async def predict(url: str, model_name: str):
         print('Found %s unique tokens.' % len(tokenizer.word_index))
         sys.stdout.flush()
 
-    sequences = tokenizer.texts_to_sequences([cleaned_tokens])
+    sequences = tokenizer.texts_to_sequences(cleaned_tokens)
     print("sequences: ", sequences)
     sys.stdout.flush()
 
-    X_padded = pad_sequences([sequences], maxlen=max_sequence_length)
+    X_padded = pad_sequences(sequences, maxlen=max_sequence_length)
     print("X_padded: ", X_padded)
     print("X_padded dtype: ", X_padded.dtype)
     sys.stdout.flush()
     del tokenizer
-    
-    # Flatten the list of lists into a single list
-    flat_sequences = [item for sublist in sequences for item in sublist]
-    print("flat_sequences: ", flat_sequences)
-    sys.stdout.flush()
 
     # Await the prediction result
     prediction = model.predict(X_padded)
