@@ -83,11 +83,10 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-					
                     if (data.status === "fail") {
                         document.getElementById("prediction").textContent = "Error: " + data.detail;
                     } else {
-						document.getElementById("prediction").textContent = `Prediction: ${deta.prediction} (Accuracy: ${data.accuracy}%)`;
+						document.getElementById("prediction").textContent = `Prediction: ${deta.predicted_class} (Accuracy: ${data.accuracy}%)`;
 					}
                 })
                 .catch(error => {
