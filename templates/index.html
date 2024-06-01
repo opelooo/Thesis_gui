@@ -3,34 +3,43 @@
 
 <head>
     <title>URL Classifier</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
         }
 
         h1 {
             text-align: center;
             margin-top: 50px;
+            font-size: 24px;
+            padding: 10px;
         }
 
         form {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 30px;
+            padding: 10px;
         }
 
         input[type=text], select {
-            width: 50%;
+            width: 80%;
+            max-width: 500px;
             padding: 12px 20px;
             margin: 8px 0;
             box-sizing: border-box;
             border: none;
             border-radius: 4px;
             background-color: white;
+            font-size: 16px;
         }
 
         input[type=submit] {
-            width: 20%;
+            width: 40%;
+            max-width: 200px;
             background-color: #4CAF50;
             color: white;
             padding: 14px 20px;
@@ -38,6 +47,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
         }
 
         input[type=submit]:hover {
@@ -46,7 +56,20 @@
 
         #prediction {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 30px;
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        @media (max-width: 600px) {
+            input[type=text], select, input[type=submit] {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 20px;
+                margin-top: 20px;
+            }
         }
     </style>
     <script>
@@ -72,8 +95,8 @@
                     document.getElementById("prediction").textContent = "Fail: The text you entered is not a valid URL.";
                     return;
                 }
-				
-				document.getElementById("prediction").textContent = "Predicting...";
+
+                document.getElementById("prediction").textContent = "Predicting...";
 
                 fetch('/predict/', {
                     method: 'POST',
