@@ -12,25 +12,20 @@ class_names = ['Benign', 'Defacement', 'Phishing', 'Malware']
 
 
 async def predict(url: str, model_name: str):
-    print("predict func "+url +" using " + model_name)
-    sys.stdout.flush()
+    print_info(f"predict func {url} using {model_name}")
     
     model_path = f"/app/models/{model_name}"
-    print("model name: " + model_name)
-    sys.stdout.flush()
+    #print_info("model name: " + model_name)
         
     model = load_model(model_path)
-    print("load model")
-    sys.stdout.flush()
+    #print_info(f"load model")
 
     # Get the max_sequence_length from the model
     max_sequence_length = 148
-    print("max_sequence_length: ", max_sequence_length)
-    sys.stdout.flush()
+    print_info(f"max_sequence_length: {max_sequence_length}")
     
     cleaned_tokens = clean_and_normalize(tokenize_url(url))
-    print("cleaned_tokens: ", cleaned_tokens)
-    sys.stdout.flush()
+    print_info(f"cleaned_tokens: {cleaned_tokens}")
     
     tokens = await read_tokens()
 
@@ -40,43 +35,38 @@ async def predict(url: str, model_name: str):
         tokenizer = Tokenizer()
         
         tokenizer.fit_on_texts(tokens)
-        print('Found %s unique tokens.' % len(tokenizer.word_index))
-        sys.stdout.flush()
+        print('INFO:    Found %s unique tokens.' % len(tokenizer.word_index))
         
         tokenizer.fit_on_texts(cleaned_tokens)
-        print('Found %s unique tokens.' % len(tokenizer.word_index))
-        sys.stdout.flush()
+        print('INFO:    Found %s unique tokens.' % len(tokenizer.word_index))
 
     sequences = tokenizer.texts_to_sequences(cleaned_tokens)
-    print("sequences: ", sequences)
-    sys.stdout.flush()
+    print_info(f"sequences: {sequences}")
 
     concatenated_sequence = [item for sublist in sequences for item in sublist]
-    print([concatenated_sequence]) 
+    #print([concatenated_sequence]) 
 
     X_padded = pad_sequences([concatenated_sequence], maxlen=max_sequence_length)
-    print("X_padded: ", X_padded)
-    print("X_padded dtype: ", X_padded.dtype)
-    sys.stdout.flush()
+    # print("X_padded: ", X_padded)
+    #print("X_padded dtype: ", X_padded.dtype)
+    #sys.stdout.flush()
     del tokenizer
 
     # Await the prediction result
     prediction = model.predict(X_padded)
-    print("prediction: ", prediction)
-    print("prediction dtype: ", prediction.dtype)
+    print_info(f"prediction: {prediction}")
+    # print("prediction dtype: ", prediction.dtype)
     sys.stdout.flush()
     
     predicted_class = np.argmax(prediction)
-    print("predicted class: ", predicted_class)
-    sys.stdout.flush()
+    # print("predicted class: ", predicted_class)
+    # sys.stdout.flush()
     
     class_name = class_names[predicted_class]
-    print("class_name: " + class_name)
-    sys.stdout.flush()
+    print_info(f"class_name: {class_name}")
     
     probability = np.max(prediction) * 100
-    print("probability: ", probability)
-    sys.stdout.flush()
+    print_info(f"probability: {probability}")
     
     return {"status": "success", "predicted_class": class_name, "accuracy": probability}
 
@@ -114,4 +104,6 @@ async def read_tokens():
             word_index[word] = int(index)
             
     return word_index
-    
+
+def print_info(msg):
+    print("INFO:    " + msg)

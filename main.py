@@ -32,7 +32,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
-    print("open main menu")
+    # print("open main menu")
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/doc", response_class=HTMLResponse)
