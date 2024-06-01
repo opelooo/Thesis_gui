@@ -86,11 +86,11 @@
                     if (data.status === "fail") {
                         document.getElementById("prediction").textContent = "Error: " + data.detail;
                     } else {
-						document.getElementById("prediction").textContent = `data`;
+						document.getElementById("prediction").textContent = `${data}`;
 					}
                 })
                 .catch(error => {
-                    document.getElementById("prediction").textContent = "Error: " + error.msg;
+                    document.getElementById("prediction").textContent = "Error: " + error.msg + data;
                 });
             };
         };
