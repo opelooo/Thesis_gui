@@ -45,7 +45,7 @@ def get_models():
     model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
     return {"models": model_files}
 
-@app.post('/predict')
+@app.post('/predict/')
 async def predict_route(url_input: URLInput):
     try:
         model_path = os.path.join("models", url_input.model_name)
