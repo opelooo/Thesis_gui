@@ -52,7 +52,7 @@ async def predict(url: str, model_name: str):
         print('Found %s unique tokens.' % len(tokenizer.word_index))
         sys.stdout.flush()
 
-    sequences = tokenizer.texts_to_sequences(cleaned_tokens)
+    sequences = tokenizer.texts_to_sequences([cleaned_tokens])
     print("sequences: ", sequences)
     sys.stdout.flush()
 
