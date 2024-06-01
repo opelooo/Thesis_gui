@@ -7,7 +7,6 @@ from fastapi import Request, HTTPException
 import apis_config as config
 from pydantic import BaseModel
 from functions import predict
-from functions import read_tokens
 from starlette.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
@@ -34,7 +33,6 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
     print("open main menu")
-    read_tokens()
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/doc", response_class=HTMLResponse)
