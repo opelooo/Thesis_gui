@@ -37,7 +37,7 @@ async def predict(url: str, model_name: str):
     print("cleaned_tokens: ", cleaned_tokens)
     sys.stdout.flush()
     
-    tokens = read_tokens()
+    tokens = await read_tokens()
 
     # Use the existing tokenizer if available; otherwise, create a new one
     if 'tokenizer' not in globals():
@@ -45,7 +45,12 @@ async def predict(url: str, model_name: str):
         tokenizer = Tokenizer()
         
         tokenizer.fit_on_texts(tokens)
+        print('Found %s unique tokens.' % len(tokenizer.word_index))
+        sys.stdout.flush()
+        
         tokenizer.fit_on_texts(cleaned_tokens)
+        print('Found %s unique tokens.' % len(tokenizer.word_index))
+        sys.stdout.flush()
 
     sequences = tokenizer.texts_to_sequences(cleaned_tokens)
     print("sequences: ", sequences)
@@ -108,7 +113,6 @@ async def read_tokens():
         for line in file:
             word, index = line.strip().split(': ')
             word_index[word] = int(index)
-    
-    print('Found %s unique tokens.' % len(word_index))
+            
     return word_index
     
