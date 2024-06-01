@@ -9,6 +9,7 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 class_names = ['Benign', 'Defacement', 'Phishing', 'Malware']
+word_index = {}
 
 async def predict(url: str, model_name: str):
     print("predict func "+url +" using " + model_name)
@@ -40,6 +41,7 @@ async def predict(url: str, model_name: str):
     if 'tokenizer' not in globals():
         global tokenizer
         tokenizer = Tokenizer()
+        tokenizer.word_index = word_index
         tokenizer.fit_on_texts(cleaned_tokens)
 
     sequences = tokenizer.texts_to_sequences(cleaned_tokens)
@@ -50,6 +52,7 @@ async def predict(url: str, model_name: str):
     print("X_padded: ", X_padded)
     print("X_padded dtype: ", X_padded.dtype)
     sys.stdout.flush()
+    del tokenizer
 
     # Await the prediction result
     prediction = model.predict(X_padded)
@@ -69,7 +72,6 @@ async def predict(url: str, model_name: str):
     print("probability: ", probability)
     sys.stdout.flush()
     
-    del tokenizer
     return {"status": "success", "predicted_class": class_name, "accuracy": probability}
 
 def tokenize_url(url):
@@ -97,3 +99,12 @@ def clean_and_normalize(tokens):
         token = ''.join(char for char in token if char not in string.punctuation)
         cleaned_tokens.append(token)
     return cleaned_tokens
+
+async def read_tokens():
+    with open('src/tokens.txt', 'r') as file:
+        for line in file:
+            word, index = line.strip().split(': ')
+            word_index[word] = int(index)
+    
+    print('Found %s unique tokens.' % len(word_index))
+    
