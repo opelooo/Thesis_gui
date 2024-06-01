@@ -51,7 +51,10 @@ async def predict(url: str, model_name: str):
     print("sequences: ", sequences)
     sys.stdout.flush()
 
-    X_padded = singel_padding(sequences, max_sequence_length)
+    concatenated_sequence = [item for sublist in sequences for item in sublist]
+    print([concatenated_sequence]) 
+
+    X_padded = pad_sequences([concatenated_sequence], maxlen=max_sequence_length)
     print("X_padded: ", X_padded)
     print("X_padded dtype: ", X_padded.dtype)
     sys.stdout.flush()
@@ -102,18 +105,6 @@ def clean_and_normalize(tokens):
         token = ''.join(char for char in token if char not in string.punctuation)
         cleaned_tokens.append(token)
     return cleaned_tokens
-
-def singel_padding(sequences, maxlen):
-    concatenated_sequence = [item for sublist in sequences for item in sublist]
-    print(concatenated_sequence)
-
-    padded_sequence = np.zeros(max_sequence_length, dtype=int)
-    sequence_length = len(concatenated_sequence)
-    padded_sequence[-sequence_length:] = concatenated_sequence
-
-    # Print the padded sequence
-    print(padded_sequence)
-    return padded_sequence
 
 async def read_tokens():
     word_index = {}
