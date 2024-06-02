@@ -30,13 +30,24 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 @app.get("/favicon.ico")
 async def get_favicon():
-    return FileResponse("static/favicon.ico", headers={"Cache-Control": "max-age=3600", "X-Content-Type-Options": "nosniff"})
+    headers = {
+        "X-Content-Type-Options": "nosniff",
+        "Cache-Control": "max-age=3600"  # Adjust cache duration as needed
+    }
+    
+    return FileResponse("static/favicon.ico", headers=headers)
 
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request}, headers={"Cache-Control": f"max-age=3600", "Content-Type": "text/html; charset=utf-8", "X-Content-Type-Options": "nosniff"})
+    headers={
+        "Cache-Control": f"max-age=3600", 
+        "Content-Type": "text/html; charset=utf-8", 
+        "X-Content-Type-Options": "nosniff"
+    }
+    
+    return templates.TemplateResponse("index.html", {"request": request}, headers=headers)
 
 @app.get("/doc", response_class=HTMLResponse)
 async def doc(request: Request):
@@ -45,7 +56,13 @@ async def doc(request: Request):
 @app.get("/models/")
 def get_models(response: Response):
     model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
-    return JSONResponse(content={"models": model_files}, headers={"Cache-Control": f"max-age=3600", "Content-Type": "application/json; charset=utf-8", "X-Content-Type-Options": "nosniff"})
+    headers={
+        "Cache-Control": "max-age=3600", 
+        "Content-Type": "application/json,application/json; charset=utf-8", 
+        "X-Content-Type-Options": "nosniff"
+    }
+    
+    return JSONResponse(content={"models": model_files}, headers=headers)
 
 @app.post('/predict/')
 async def predict_route(url_input: URLInput):
