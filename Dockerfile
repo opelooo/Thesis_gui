@@ -8,7 +8,13 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/* && \
+    python -m venv /venv && \
+    /venv/bin/python -m pip install --no-cache-dir --upgrade pip && \
+    /venv/bin/pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copy the rest of the application code into the container
 COPY . /app
@@ -16,8 +22,8 @@ COPY . /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Expose port 80 for the FastAPI application
-# EXPOSE 80
+# Expose port 8080 for the FastAPI application
+# EXPOSE 8080
 
 # Run the FastAPI application with uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--log-level=debug"]
+CMD ["/venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--log-level=debug"]
