@@ -72,7 +72,7 @@ async def predict_route(url_input: URLInput):
             raise HTTPException(status_code=404, detail="Model not found")
         
         prediction = await predict(url_input.url, url_input.model_name)
-        return JSONResponse(content={prediction}, headers={"Content-Type": "application/json; charset=utf-8", "X-Content-Type-Options": "nosniff"})
+        return JSONResponse(content=prediction, headers={"Content-Type": "application/json; charset=utf-8", "X-Content-Type-Options": "nosniff"})
 
     except Exception as e:
         print(str(e))
