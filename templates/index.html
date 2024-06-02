@@ -105,7 +105,7 @@
 				var intervalId = setInterval(function () {
 					document.getElementById("prediction").textContent += ".";
 					dots++;
-					if (dots === 3) {
+					if (dots === 4) {
 						dots = 0;
 						document.getElementById("prediction").textContent = "Predicting";
 					}
@@ -120,6 +120,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+					clearInterval(intervalId); // Stop animation loop
                     if (data.status === "fail") {
                         document.getElementById("prediction").textContent = "Error: " + data.detail;
                     } else {
@@ -127,6 +128,7 @@
                     }
                 })
                 .catch(error => {
+					clearInterval(intervalId); // Stop animation loop
                     document.getElementById("prediction").textContent = "Error: " + error.message;
                 });
             };
