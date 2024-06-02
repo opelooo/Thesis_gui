@@ -44,7 +44,7 @@ async def doc(request: Request):
 @app.get("/models/")
 def get_models(response: Response):
     model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
-    return JSONResponse(content={"models": model_files}, headers={"Content-Type": "application/json; charset=utf-8"})
+    return JSONResponse(content={"models": model_files}, headers={"Cache-Control": f"max-age=3600", "Content-Type": "application/json; charset=utf-8", "X-Content-Type-Options": "nosniff"})
 
 @app.post('/predict/')
 async def predict_route(url_input: URLInput):
