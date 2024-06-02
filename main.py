@@ -9,6 +9,7 @@ from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from pydantic import BaseModel
 import apis_config as config
 from functions import predict
+from fastapi.staticfiles import StaticFiles
 
 app = config.app
 
@@ -23,6 +24,8 @@ app.add_middleware(
 class URLInput(BaseModel):
     url: str
     model_name: str
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
