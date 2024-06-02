@@ -40,10 +40,7 @@ async def doc(request: Request):
 @app.get("/models/")
 def get_models(response: Response):
     model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
-    response.headers["Cache-Control"] = "max-age=3600"
-    response.headers["Content-Type"] = "application/json; charset=utf-8"
-    response.headers["X-Content-Type-Options"] = "nosniff"
-    return {"models": model_files}
+    return JSONResponse(content={"models": model_files}, headers={"Content-Type": "application/json; charset=utf-8"})
 
 @app.post('/predict/')
 async def predict_route(url_input: URLInput):
@@ -53,7 +50,7 @@ async def predict_route(url_input: URLInput):
             raise HTTPException(status_code=404, detail="Model not found")
         
         prediction = await predict(url_input.url, url_input.model_name)
-        return prediction
+        return JSONResponse(content={prediction}, headers={"Content-Type": "application/json; charset=utf-8", "X-Content-Type-Options": "nosniff"})
 
     except Exception as e:
         print(str(e))
