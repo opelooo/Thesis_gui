@@ -1,7 +1,7 @@
 import os
 import sys
 from uvicorn import run
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Response
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
@@ -35,8 +35,9 @@ async def doc(request: Request):
     return templates.TemplateResponse("doc.html", {"request": request})
 
 @app.get("/models/")
-def get_models():
+def get_models(response: Response):
     model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
+    response.headers["Cache-Control"] = "max-age=3600"
     return {"models": model_files}
 
 @app.post('/predict/')
