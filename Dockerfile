@@ -23,7 +23,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Expose port 8080 for the FastAPI application
-# EXPOSE 8080
+EXPOSE 8080
 
 # Run the FastAPI application with uvicorn
 CMD ["/venv/bin/uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--log-level=debug"]
