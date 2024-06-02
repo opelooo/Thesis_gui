@@ -28,7 +28,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return return templates.TemplateResponse("index.html", {"request": request}, headers={"Cache-Control": f"max-age=3600", "Content-Type": "text/html; charset=utf-8", "X-Content-Type-Options": "nosniff"})
 
 @app.get("/doc", response_class=HTMLResponse)
 async def doc(request: Request):
@@ -38,6 +38,8 @@ async def doc(request: Request):
 def get_models(response: Response):
     model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
     response.headers["Cache-Control"] = "max-age=3600"
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    response.headers["X-Content-Type-Options"] = "nosniff"
     return {"models": model_files}
 
 @app.post('/predict/')
