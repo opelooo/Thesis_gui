@@ -98,7 +98,18 @@
                     return;
                 }
 
-                document.getElementById("prediction").textContent = "Predicting...";
+                document.getElementById("prediction").textContent = "Predicting";
+
+				// Animation loop
+				var dots = 0;
+				var intervalId = setInterval(function () {
+					document.getElementById("prediction").textContent += ".";
+					dots++;
+					if (dots === 3) {
+						dots = 0;
+						document.getElementById("prediction").textContent = "Predicting";
+					}
+				}, 500);
 
                 fetch('/predict/', {
                     method: 'POST',

@@ -25,7 +25,11 @@ class URLInput(BaseModel):
     url: str
     model_name: str
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
+@app.get("/favicon.ico")
+async def get_favicon():
+    return FileResponse("static/favicon.ico", headers={"Cache-Control": "max-age=3600", "X-Content-Type-Options": "nosniff"})
 
 templates = Jinja2Templates(directory="templates")
 
