@@ -1,14 +1,11 @@
-import io
 import os
 import sys
-import numpy as np
 from uvicorn import run
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
-from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel
 import apis_config as config
 from functions import predict
@@ -35,7 +32,7 @@ async def main(request: Request):
 
 @app.get("/doc", response_class=HTMLResponse)
 async def doc(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("doc.html", {"request": request})
 
 @app.get("/models/")
 def get_models():
@@ -58,5 +55,6 @@ async def predict_route(url_input: URLInput):
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 8080))
-    run(app, host="0.0.0.0", port=port)
+    # port = int(os.environ.get('PORT', 8080))
+    # run(app, host="0.0.0.0", port=port, timeout_keep_alive=1200)
+    run(app)
