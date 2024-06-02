@@ -31,7 +31,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def main(request: Request):
-    return return templates.TemplateResponse("index.html", {"request": request}, headers={"Cache-Control": f"max-age=3600", "Content-Type": "text/html; charset=utf-8", "X-Content-Type-Options": "nosniff"})
+    return templates.TemplateResponse("index.html", {"request": request}, headers={"Cache-Control": f"max-age=3600", "Content-Type": "text/html; charset=utf-8", "X-Content-Type-Options": "nosniff"})
 
 @app.get("/doc", response_class=HTMLResponse)
 async def doc(request: Request):
