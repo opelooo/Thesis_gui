@@ -23,21 +23,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Custom middleware to add security and caching headers
-class CustomHeadersMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        response = await call_next(request)
-        response.headers['Cache-Control'] = 'max-age=3600, must-revalidate'
-        response.headers['Pragma'] = 'cache'
-        response.headers['Expires'] = 'Wed, 01 Jan 2025 12:00:00 GMT'
-        response.headers['X-Content-Type-Options'] = 'nosniff'
-        return response
-
-app.add_middleware(CustomHeadersMiddleware)
-
-# HTTPS Redirect Middleware for security
-app.add_middleware(HTTPSRedirectMiddleware)
-
 class URLInput(BaseModel):
     url: str
     model_name: str
