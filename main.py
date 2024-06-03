@@ -29,6 +29,14 @@ class URLInput(BaseModel):
 
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
+@app.middleware("http")
+async def add_headers(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "max-age=3600"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
 @app.get("/favicon.ico")
 async def get_favicon():
     headers = {
