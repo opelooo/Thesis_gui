@@ -11,6 +11,7 @@ import apis_config as config
 from functions import predict
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
+# TODO: tambah GZip setelah sidang
 
 app = config.app
 
