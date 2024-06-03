@@ -54,7 +54,7 @@ async def predict(url: str, model_name: str):
 
     # Await the prediction result
     prediction = model.predict(X_padded)
-    print_info(f"prediction: {prediction}")
+    # print_info(f"prediction: {prediction}")
     # print("prediction dtype: ", prediction.dtype)
     # sys.stdout.flush()
     
