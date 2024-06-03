@@ -58,6 +58,10 @@ async def predict(url: str, model_name: str):
     # print("prediction dtype: ", prediction.dtype)
     # sys.stdout.flush()
     
+    prediction = np.array(prediction).flatten()
+    prediction = prediction / prediction.sum()  # Normalize to ensure the probabilities sum to 1
+    print_info(f"normalize prediction: {prediction}")
+    
     predicted_class = np.argmax(prediction)
     # print("predicted class: ", predicted_class)
     # sys.stdout.flush()
