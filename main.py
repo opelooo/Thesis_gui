@@ -62,7 +62,7 @@ async def main(request: Request):
 async def doc(request: Request):
     return templates.TemplateResponse("doc.html", {"request": request})
 
-@app.get("/models/")
+@app.get("/models")
 def get_models(response: Response):
     model_files = [f for f in os.listdir("/app/models") if f.endswith('.keras')]
     headers={
@@ -73,7 +73,7 @@ def get_models(response: Response):
     
     return JSONResponse(content={"models": model_files}, headers=headers)
 
-@app.post('/predict/')
+@app.post('/predict')
 async def predict_route(url_input: URLInput):
     try:
         model_path = os.path.join("models", url_input.model_name)
@@ -89,6 +89,6 @@ async def predict_route(url_input: URLInput):
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    # port = int(os.environ.get('PORT', 8080))
-    # run(app, host="0.0.0.0", port=port, timeout_keep_alive=1200)
-    run(app)
+    port = int(os.environ.get('PORT', 8080))
+    run(app, host="0.0.0.0", port=port, timeout_keep_alive=1200)
+    # run(app)
